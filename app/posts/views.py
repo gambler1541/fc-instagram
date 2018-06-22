@@ -23,6 +23,11 @@ from django.shortcuts import render
 
 from .models import Post
 
+# '/'에 접근했을 때 post_list URL로 이동 (root url접근시 자동으로)
+#  redirect또는 HttpResponseRedirect사용
+# 1. '/'에 접근했을때의 URL지정
+# 2. '/'에 접근했을때의 view구현 (def index)
+# 3. index view는 post_list로 redirect시켜주는 기능을 함
 
 def post_list(request):
     posts = Post.objects.all()
