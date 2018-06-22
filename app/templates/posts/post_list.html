@@ -3,6 +3,15 @@
 {% block content %}
 	<h2>Post list</h2>
 	{% for post in posts %}
-		<div>{{ post }}</div>
+		<!--
+			post의 author.username과
+			post.photo를 출력
+		-->
+		<div>
+			<div>{{ post.author.username }}</div>
+			<div>
+				<img width="100%" src="{{ post.photo.url }}" alt="">
+			</div>
+		</div>
 	{% endfor %}
 {% endblock %}
