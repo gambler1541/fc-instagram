@@ -1,6 +1,3 @@
-from django.http import HttpResponse
-
-
 # config.urls에서
 #   path('posts/', include('posts.urls'))
 
@@ -22,9 +19,12 @@ from django.http import HttpResponse
 # 2. view에서 template을 렌더링하는 기능 추가
 # 3. template에서 QuerySet또는 object를 사용해서 객체 출력
 # 4. template에 extend사용
+from django.shortcuts import render
+
+
 def post_list(request):
-    return HttpResponse('Post List')
+    return render(request, 'posts/post_list.html')
 
 
 def post_detail(request, pk):
-    return HttpResponse('Post Detail pk: {}'.format(pk))
+    return render(request, 'posts/post_detail.html')
