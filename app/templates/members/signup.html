@@ -2,21 +2,15 @@
 
 {% block content %}
 <div>
-	{% if errors %}
-		<ul>
-		{% for error in errors %}
-			<li>{{ error }}</li>
-		{% endfor %}
-		</ul>
-	{% endif %}
-
 	<form action="" method="POST">
 		{% csrf_token %}
-		<div><label>Username<input type="text" name="username" value="{{ username }}"></label></div>
-		<div><label>Email<input type="text" name="email" value="{{ email }}"></label></div>
-		<div><label>Password<input type="password" name="password"></label></div>
-		<div><label>Password check<input type="password" name="password2"></label></div>
-		<button type="submit">회원가입</button>
+		{% for field in form %}
+		<div class="form-group">
+			<label for="{{ field.id_for_label }}">{{ field.label }}</label>
+			{{ field }}
+		</div>
+		{% endfor %}
+		<button type="submit" class="btn btn-primary btn-block">회원가입</button>
 	</form>
 </div>
 {% endblock %}

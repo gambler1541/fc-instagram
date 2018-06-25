@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login, get_user_model, logout
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 # User클래스 자체를 가져올때는 get_user_model()
@@ -46,15 +47,87 @@ def logout_view(request):
     return redirect('index')
 
 
+from .forms import SignupForm
+
+
 def signup(request):
+    # form.is_valid()를 통과하지 못한 경우,
+    #  유효성 검증을 통과하지 못한 내용은 form.<field>.errors에 정의됨 -> form을 순회하면 form.<field>를 하나씩 순회
+    #  (통과하지 못한 경우의 'form'변수를 디버깅을 이용해 확인해본다)
+
+    # 1. form.is_valid()를 통과하지 못했을 경우, 해당 내용을 template에 출력하도록 구현
+    # 2. SignupForm의 clean()메서드를 재정의하고, password와 password2를 비교해서 유효성을 검증하도록 구현
+    if request.method == 'POST':
+        form = SignupForm(request.POST)
+        # form에 들어있는 데이터가 유효한지 검사
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
+            password2 = form.cleaned_data['password2']
+
+            user = User.objects.create_user(
+                username=username,
+                email=email,
+                password=password,
+            )
+            login(request, user)
+            return redirect('index')
+        else:
+            result = '\n'.join(['{}: {}'.format(key, value) for key, value in form.errors.items()])
+            return HttpResponse(result)
+    else:
+        form = SignupForm()
+        context = {
+            'form': form,
+        }
+        return render(request, 'members/signup.html', context)
+
+
+def signup_bak(request):
     context = {
         'errors': [],
     }
     if request.method == 'POST':
+        # username, email, password, password2에 대해서
+        # 입력되지 않은 필드에 대한 오류를 추가
         username = request.POST['username']
         email = request.POST['email']
         password = request.POST['password']
         password2 = request.POST['password2']
+
+        # 반드시 내용이 채워져야 하는 form의 필드 (위 변수명)
+        # hint: required_fields를 dict로
+        # required_fields = ['username', 'email', 'password', 'password2']
+        required_fields = {
+            'username': {
+                'verbose_name': '아이디',
+            },
+            'email': {
+                'verbose_name': '이메일',
+            },
+            'password': {
+                'verbose_name': '비밀번호',
+            },
+            'password2': {
+                'verbose_name': '비밀번호 확인',
+            },
+        }
+        for field_name in required_fields.keys():
+            if not locals()[field_name]:
+                context['errors'].append('{}을(를) 채워주세요'.format(
+                    required_fields[field_name]['verbose_name'],
+                ))
+
+        # # for문으로 작동하도록 수정
+        # if not username:
+        #     context['errors'].append('username을 채워주세요')
+        # if not email:
+        #     context['errors'].append('email을 채워주세요')
+        # if not password:
+        #     context['errors'].append('password를 채워주세요')
+        # if not password2:
+        #     context['errors'].append('password2를 채워주세요')
 
         # 입력데이터 채워넣기
         context['username'] = username
