@@ -27,7 +27,10 @@
 
 			-->
 			{% if user.is_authenticated %}
-				<a href="">로그아웃하기</a>
+				<form action="{% url 'members:logout' %}" method="POST">
+					{% csrf_token %}
+					<button type="submit">로그아웃하기</button>
+				</form>
 			{% else %}
 				<a href="{% url 'members:login' %}">로그인하기</a>
 				<a href="{% url 'members:signup' %}">회원가입하기</a>

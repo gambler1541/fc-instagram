@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate, login, get_user_model
+from django.contrib.auth import authenticate, login, get_user_model, logout
 from django.shortcuts import render, redirect
 
 # User클래스 자체를 가져올때는 get_user_model()
@@ -39,6 +39,11 @@ def login_view(request):
     else:
         # form이 있는 template을 보여준다
         return render(request, 'members/login.html')
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('index')
 
 
 def signup(request):
