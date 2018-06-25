@@ -14,11 +14,23 @@
 			<!--
 				user가 인증되어있으면 '로그아웃하기'라는 링크를 보여주고
 				아니면 '로그인하기'링크 보여주기
+
+				logout_view를 구현
+					request.method가 POST일 경우,
+					request.user를 로그아웃시킴
+
+				URL: /members/logout/
+				view: members.views.logout_view
+				로그아웃 완료 후에는 index로 redirect
+
+				form action: logout_view
+
 			-->
 			{% if user.is_authenticated %}
 				<a href="">로그아웃하기</a>
 			{% else %}
 				<a href="{% url 'members:login' %}">로그인하기</a>
+				<a href="{% url 'members:signup' %}">회원가입하기</a>
 			{% endif %}
 		</div>
 		{% block content %}
