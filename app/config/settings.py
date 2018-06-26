@@ -30,6 +30,8 @@ SECRET_KEY = 'zjs7dymub=^!pss^3&cih4)vs$1ro2@zfu!50^sw+b1-6v)88^'
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
+# Custom user model
 AUTH_USER_MODEL = 'members.User'
 
 # Application definition
