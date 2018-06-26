@@ -23,6 +23,7 @@ from django.shortcuts import render
 
 from .models import Post
 
+
 # '/'에 접근했을 때 post_list URL로 이동 (root url접근시 자동으로)
 #  redirect또는 HttpResponseRedirect사용
 # 1. '/'에 접근했을때의 URL지정
@@ -43,3 +44,19 @@ def post_detail(request, pk):
         'post': post,
     }
     return render(request, 'posts/post_detail.html', context)
+
+
+def post_create(request):
+    # 새 포스트를 만들기
+    #  만든 후에는 해당하는 post_detail로 이동
+    #  forms.py에 PostForm을 구현해서 사용
+
+    # bound form (include file)
+    #  PostForm(request.POST)
+    #  PostForm(request.POST, request.FILES)
+
+    # POST method에서는 생성후 redirect
+    # GET method에서는 form이 보이는 템플릿 렌더링
+
+    # author는 request.user를 사용
+    pass
