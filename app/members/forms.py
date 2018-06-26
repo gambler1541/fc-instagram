@@ -1,5 +1,8 @@
 from django import forms
+from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
+
+User = get_user_model()
 
 
 class SignupForm(forms.Form):
@@ -38,7 +41,28 @@ class SignupForm(forms.Form):
     )
 
     def clean_username(self):
-        # 적절히작성
-        # 원하는결과는, 중복되지 않는 username을 사용하면 유저 생성
-        # 중복된 username을 입력하면 오류목록이 출력(자동)
-        raise ValidationError('무조건에러')
+        # username field의 clean()실행 결과가 self.cleaned_data['username']에 있음
+        data = self.cleaned_data['username']
+        if User.objects.filter(username=data).exists():
+            raise ValidationError('이미 사용중인 아이디입니다')
+        return data
+
+    def clean(self):
+        super().clean()
+        password = self.cleaned_data['password']
+        password2 = self.cleaned_data['password2']
+        if password != password2:
+            self.add_error('password2', '비밀번호와 비밀번호확인의 값이 일치하지 않습니다')
+        return self.cleaned_data
+
+    def signup(self):
+        username = self.cleaned_data['username']
+        email = self.cleaned_data['email']
+        password = self.cleaned_data['password']
+
+        user = User.objects.create_user(
+            username=username,
+            email=email,
+            password=password,
+        )
+        return user

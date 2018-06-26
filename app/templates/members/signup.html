@@ -4,10 +4,12 @@
 <div>
 	<form action="" method="POST">
 		{% csrf_token %}
+		{{ form.non_field_errors }}
 		{% for field in form %}
 		<div class="form-group">
 			<label for="{{ field.id_for_label }}">{{ field.label }}</label>
 			{{ field }}
+			{{ field.errors }}
 		</div>
 		{% endfor %}
 		<button type="submit" class="btn btn-primary btn-block">회원가입</button>
