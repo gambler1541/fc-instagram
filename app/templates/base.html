@@ -37,6 +37,7 @@
 				<a class="btn btn-primary btn-sm" href="{% url 'members:login' %}">로그인하기</a>
 				<a class="btn btn-primary btn-sm" href="{% url 'members:signup' %}">회원가입하기</a>
 			{% endif %}
+			<a class="btn btn-primary btn-sm" href="{% url 'posts:post-create' %}">글 쓰기</a>
 		</div>
 		{% block content %}
 		{% endblock %}

@@ -31,8 +31,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-# Custom user model
+# Auth
 AUTH_USER_MODEL = 'members.User'
+LOGIN_URL = 'members:login'
 
 # Application definition
 
