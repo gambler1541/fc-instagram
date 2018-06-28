@@ -10,6 +10,13 @@
 		<div>
 			<div>{{ post.author.username }}</div>
 			<div>
+				<form action="{% url 'posts:post-delete' pk=post.pk %}" method="POST">
+					{% csrf_token %}
+					<button class="btn btn-danger btn-sm">지우기</button>
+				</form>
+
+			</div>
+			<div>
 				<img width="100%" src="{{ post.photo.url }}" alt="">
 			</div>
 		</div>

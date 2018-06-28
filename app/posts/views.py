@@ -20,7 +20,9 @@
 # 3. template에서 QuerySet또는 object를 사용해서 객체 출력
 # 4. template에 extend사용
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
+from django.core.exceptions import PermissionDenied
+from django.shortcuts import render, redirect, get_object_or_404
+from django.views.decorators.http import require_POST
 
 from .forms import PostForm
 from .models import Post
@@ -46,6 +48,20 @@ def post_detail(request, pk):
         'post': post,
     }
     return render(request, 'posts/post_detail.html', context)
+
+
+@require_POST
+@login_required
+def post_delete(request, pk):
+    # if request.method != 'POST':
+    #     return HttpResponseNotAllowed()
+    # if not request.user.is_authenticated:
+    #     return redirect('members:login')
+    post = get_object_or_404(Post, pk=pk)
+    if post.author != request.user:
+        raise PermissionDenied('지울 권한이 없습니다')
+    post.delete()
+    return redirect('posts:post-list')
 
 
 @login_required
