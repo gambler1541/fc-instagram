@@ -19,7 +19,7 @@
 # 2. view에서 template을 렌더링하는 기능 추가
 # 3. template에서 QuerySet또는 object를 사용해서 객체 출력
 # 4. template에 extend사용
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from .models import Post
 
@@ -47,16 +47,12 @@ def post_detail(request, pk):
 
 
 def post_create(request):
-    # 새 포스트를 만들기
-    #  만든 후에는 해당하는 post_detail로 이동
-    #  forms.py에 PostForm을 구현해서 사용
-
-    # bound form (include file)
-    #  PostForm(request.POST)
-    #  PostForm(request.POST, request.FILES)
-
-    # POST method에서는 생성후 redirect
-    # GET method에서는 form이 보이는 템플릿 렌더링
-
-    # author는 request.user를 사용
-    pass
+    if request.method == 'POST':
+        post = Post(
+            author=request.user,
+            photo=request.FILES['photo'],
+            content=request.POST['content'],
+        )
+        post.save()
+        return redirect('posts:post-detail', pk=post.pk)
+    return render(request, 'posts/post_create.html')

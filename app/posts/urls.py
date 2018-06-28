@@ -8,4 +8,5 @@ urlpatterns = [
     #  path('posts/', include(이 urlpatterns))
     path('', views.post_list, name='post-list'),
     path('<int:pk>/', views.post_detail, name='post-detail'),
+    path('create/', views.post_create, name='post-create'),
 ]

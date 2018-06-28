@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div>
+
+	<form action="" method="POST" enctype="multipart/form-data">
+		{% csrf_token %}
+		<div class="form-group">
+			<label for="id_photo">사진</label>
+			<input id="id_photo" type="file" name="photo" class="form-control">
+		</div>
+
+		<div class="form-group">
+			<label for="id_content">설명</label>
+			<input id="id_content" type="text" name="content" class="form-control">
+		</div>
+
+		<button type="submit" class="btn btn-primary btn-block">작성</button>
+	</form>
+</div>
+{% endblock %}
