@@ -5,13 +5,16 @@
 
 	<form action="" method="POST" enctype="multipart/form-data">
 		{% csrf_token %}
-
-		{% for field in form %}
 		<div class="form-group">
-			<label for="{{ field.id_for_label }}">{{ field.label }}</label>
-			{{ field }}
+			<label for="id_photo">사진</label>
+			<input id="id_photo" type="file" name="photo" class="form-control">
 		</div>
-		{% endfor %}
+
+		<div class="form-group">
+			<label for="id_content">설명</label>
+			<input id="id_content" type="text" name="content" class="form-control">
+		</div>
+
 		<button type="submit" class="btn btn-primary btn-block">작성</button>
 	</form>
 </div>

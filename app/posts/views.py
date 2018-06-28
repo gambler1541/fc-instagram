@@ -19,8 +19,10 @@
 # 2. view에서 template을 렌더링하는 기능 추가
 # 3. template에서 QuerySet또는 object를 사용해서 객체 출력
 # 4. template에 extend사용
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
+from .forms import PostForm
 from .models import Post
 
 
@@ -47,6 +49,20 @@ def post_detail(request, pk):
 
 
 def post_create(request):
+    if request.method == 'POST':
+        form = PostForm(request.POST, request.FILES)
+        if form.is_valid():
+            post = form.save(author=request.user)
+            return redirect('posts:post-detail', pk=post.pk)
+    else:
+        form = PostForm()
+    context = {
+        'form': form,
+    }
+    return render(request, 'posts/post_create.html', context)
+
+
+def post_create_without_form(request):
     if request.method == 'POST':
         post = Post(
             author=request.user,
