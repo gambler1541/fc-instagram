@@ -17,7 +17,9 @@
 
 			</div>
 			<div>
+				{% if post.photo %}
 				<img width="100%" src="{{ post.photo.url }}" alt="">
+				{% endif %}
 			</div>
 		</div>
 	{% endfor %}

@@ -24,7 +24,7 @@ from django.core.exceptions import PermissionDenied
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
 
-from .forms import PostForm
+from .forms import PostForm, PostModelForm
 from .models import Post
 
 
@@ -70,7 +70,19 @@ def post_create(request):
     #  post = form.save(commit=False)
     #  post.author = request.user
     #  post.save()
-    pass
+    if request.method == 'POST':
+        form = PostModelForm(request.POST, request.FILES)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.save()
+            return redirect('posts:post-detail', pk=post.pk)
+    else:
+        form = PostModelForm()
+    context = {
+        'form': form,
+    }
+    return render(request, 'posts/post_create.html', context)
 
 
 @login_required

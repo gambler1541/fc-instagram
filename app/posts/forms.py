@@ -6,7 +6,12 @@ from .models import Post
 class PostModelForm(forms.ModelForm):
     # field정의를 직접 하지 않음
     #  (어떤 field를 사용할 것인지만 class Meta에 기록)
-    pass
+    class Meta:
+        model = Post
+        fields = (
+            'photo',
+            'content',
+        )
 
 
 class PostForm(forms.Form):

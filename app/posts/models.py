@@ -8,6 +8,9 @@ class Post(models.Model):
     content = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        ordering = ['-pk']
+
 # admin에 등록
 # superuser생성
 # 로그인 해서 Post하나 추가해보기
