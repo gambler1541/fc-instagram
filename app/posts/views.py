@@ -64,8 +64,17 @@ def post_delete(request, pk):
     return redirect('posts:post-list')
 
 
-@login_required
 def post_create(request):
+    # PostModelForm을 사용
+    #  form = PostModelForm(request.POST, request.FILES)
+    #  post = form.save(commit=False)
+    #  post.author = request.user
+    #  post.save()
+    pass
+
+
+@login_required
+def post_create_with_form(request):
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES)
         if form.is_valid():

@@ -3,6 +3,12 @@ from django import forms
 from .models import Post
 
 
+class PostModelForm(forms.ModelForm):
+    # field정의를 직접 하지 않음
+    #  (어떤 field를 사용할 것인지만 class Meta에 기록)
+    pass
+
+
 class PostForm(forms.Form):
     photo = forms.ImageField(
         label='사진',
