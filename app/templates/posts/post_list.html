@@ -28,6 +28,10 @@
 						     alt="">
 						{% endif %}
 						<span>{{ post.author.username }}</span>
+						<form action="" method="POST" style="display: inline-block;">
+							{% csrf_token %}
+							<button type="submit" class="btn btn-outline-primary btn-sm">+ Follow</button>
+						</form>
 					</div>
 					<form action="{% url 'posts:post-delete' pk=post.pk %}" method="POST" class="float-right">
 						{% csrf_token %}
