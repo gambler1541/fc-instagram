@@ -12,13 +12,13 @@ class User(AbstractUser):
     site = models.URLField(blank=True)
     introduce = models.TextField(blank=True)
     gender = models.CharField(max_length=1, choices=CHOICES_GENDER)
-    relations = models.ManyToManyField(
+    to_relation_users = models.ManyToManyField(
         'self',
         through='Relation',
         symmetrical=False,
         blank=True,
-        related_name='users',
-        related_query_name='user',
+        related_name='from_relation_users',
+        related_query_name='from_relation_user',
     )
 
     def __str__(self):
