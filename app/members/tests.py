@@ -15,7 +15,8 @@ class RelationTestCase(TestCase):
         u2 = User.objects.create_user(username='u2')
 
         # u1이 u2를 follow하도록 함
-        relation = u1.relations_by_from_user.create(to_user=u2, relation_type='f')
+        relation = u1.follow(u2)
+        # relation = u1.relations_by_from_user.create(to_user=u2, relation_type='f')
 
         # u1의 following에 u2가 포함되어 있는지 확인
         self.assertIn(u2, u1.following)

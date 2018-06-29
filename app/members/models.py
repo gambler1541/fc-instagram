@@ -24,6 +24,12 @@ class User(AbstractUser):
     def __str__(self):
         return self.username
 
+    def follow(self, to_user):
+        return self.relations_by_from_user.create(
+            to_user=to_user,
+            relation_type=Relation.RELATION_TYPE_FOLLOW,
+        )
+
     @property
     def following(self):
         # 내가 follow중인 User QuerySet리턴
@@ -35,17 +41,32 @@ class User(AbstractUser):
         #         relation_type='f',
         #     ).values('to_user')
         # )
-        return User.objects.filter(pk__in=self.following_relations.values('to_user'))
+        # return User.objects.filter(pk__in=self.following_relations.values('to_user'))
+
+        # User테이블에서 filter를 거침
+        #   조건: relations_by_to_user의 from_user가 자신이며, relation_type은 'f'인 경우
+        return User.objects.filter(
+            relations_by_to_user__from_user=self,
+            relations_by_to_user__relation_type=Relation.RELATION_TYPE_FOLLOW,
+        )
 
     @property
     def followers(self):
         # 나를 follow중인 User QuerySet
-        return User.objects.filter(pk__in=self.follower_relations.values('from_user'))
+        # return User.objects.filter(pk__in=self.follower_relations.values('from_user'))
+        return User.objects.filter(
+            relations_by_to_from__to_user=self,
+            relations_by_to_from__relation_type=Relation.RELATION_TYPE_FOLLOW,
+        )
 
     @property
     def block_users(self):
         # 내가 block중인 User QuerySet
-        return User.objects.filter(pk__in=self.block_relations.values('to_user'))
+        # return User.objects.filter(pk__in=self.block_relations.values('to_user'))
+        return User.objects.filter(
+            relations_by_to_to__from_user=self,
+            relations_by_to_to__relation_type=Relation.RELATION_TYPE_BLOCK,
+        )
 
     @property
     def following_relations(self):
