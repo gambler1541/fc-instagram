@@ -9,36 +9,32 @@
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
 </head>
 <body>
-	<div class="container">
-		<h1><a href="{% url 'index' %}">Instagram</a></h1>
-		<div>
-			<!--
-				user가 인증되어있으면 '로그아웃하기'라는 링크를 보여주고
-				아니면 '로그인하기'링크 보여주기
-
-				logout_view를 구현
-					request.method가 POST일 경우,
-					request.user를 로그아웃시킴
-
-				URL: /members/logout/
-				view: members.views.logout_view
-				로그아웃 완료 후에는 index로 redirect
-
-				form action: logout_view
-
-			-->
-			{% if user.is_authenticated %}
-				<span>{{ user }}로 로그인 중</span>
-				<form action="{% url 'members:logout' %}" method="POST">
-					{% csrf_token %}
-					<button class="btn btn-primary btn-sm" type="submit">로그아웃하기</button>
-				</form>
-			{% else %}
-				<a class="btn btn-primary btn-sm" href="{% url 'members:login' %}">로그인하기</a>
-				<a class="btn btn-primary btn-sm" href="{% url 'members:signup' %}">회원가입하기</a>
-			{% endif %}
-			<a class="btn btn-primary btn-sm" href="{% url 'posts:post-create' %}">글 쓰기</a>
+	<nav class="navbar navbar-expand navbar-light bg-light">
+		<div class="container">
+			<a href="{% url 'index' %}" class="navbar-brand">Instagram</a>
+			<div class="">
+				<ul class="navbar-nav ml-auto">
+					{% if user.is_authenticated %}
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'members:logout' %}">Logout</a>
+					</li>
+					<form class="form-inline">
+						<a class="btn btn-outline-primary btn-sm" href="{% url 'posts:post-create' %}">+ Add Post</a>
+					</form>
+					{% else %}
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'members:login' %}">Login</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'members:signup' %}">Signup</a>
+					</li>
+					{% endif %}
+					<li class="nav-item"></li>
+				</ul>
+				</div>
 		</div>
+	</nav>
+	<div class="container mt-2">
 		{% block content %}
 		{% endblock %}
 	</div>
