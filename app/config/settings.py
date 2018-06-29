@@ -135,3 +135,20 @@ USE_TZ = True
 STATIC_URL = '/static/'
 # User-uploaded file을 접근할 URL접두어
 MEDIA_URL = '/media/'
+
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'handlers': {
+#         'console': {
+#             'level': 'DEBUG',
+#             'class': 'logging.StreamHandler',
+#         }
+#     },
+#     'loggers': {
+#         'django.db.backends': {
+#             'handlers': ['console'],
+#             'level': 'DEBUG',
+#         },
+#     }
+# }

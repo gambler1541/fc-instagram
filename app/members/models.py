@@ -1,6 +1,8 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
+from members.exceptions import RelationNotExist, DuplicateRelationException
+
 
 class User(AbstractUser):
     CHOICES_GENDER = (
@@ -25,10 +27,29 @@ class User(AbstractUser):
         return self.username
 
     def follow(self, to_user):
+        if self.relations_by_from_user.filter(to_user=to_user).exists():
+            raise DuplicateRelationException(from_user=self, to_user=to_user, relation_type='follow')
+
         return self.relations_by_from_user.create(
             to_user=to_user,
             relation_type=Relation.RELATION_TYPE_FOLLOW,
         )
+
+    def unfollow(self, to_user):
+        # 아래 경우가 존재하면 실행
+        # 존재하지 않으면 Exception
+        q = self.relations_by_from_user.filter(
+            to_user=to_user,
+            relation_type=Relation.RELATION_TYPE_FOLLOW,
+        )
+        if q:
+            q.delete()
+        else:
+            raise RelationNotExist(
+                from_user=self,
+                to_user=to_user,
+                relation_type='Follow',
+            )
 
     @property
     def following(self):
@@ -112,6 +133,11 @@ class Relation(models.Model):
     )
     relation_type = models.CharField(max_length=1, choices=CHOICES_RELATION_TYPE)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = (
+            ('from_user', 'to_user'),
+        )
 
     def __str__(self):
         return 'From {from_user} to {to_user} ({type})'.format(
