@@ -13,4 +13,10 @@ urlpatterns = [
     path('<int:pk>/like/', views.post_like, name='post-like'),
     path('<int:pk>/dislike/', views.post_dislike, name='post-dislike'),
     path('create/', views.post_create, name='post-create'),
+    path('<int:post_pk>/comment/create/',
+         views.comment_create,
+         name='comment-create'),
+    path('<int:post_pk>/comment/<int:comment_pk>/create/',
+         views.comment_create,
+         name='child-comment-create'),
 ]

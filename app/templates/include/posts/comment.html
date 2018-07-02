@@ -1,0 +1,14 @@
+<li>
+	<div>({{ comment.pk }}){{ comment.author.username }} | {{ comment.content }}</div>
+	<form action="{% url 'posts:child-comment-create' post_pk=post.pk comment_pk=comment.pk %}" method="POST">
+		{% csrf_token %}
+		<input type="text" name="content" class="form-control form-control-sm">
+	</form>
+	{% if comment.comments.exists %}
+	<ul>
+		{% for child_comment in comment.comments.all %}
+			{% include 'include/posts/comment.html' with comment=child_comment %}
+		{% endfor %}
+	</ul>
+	{% endif %}
+</li>

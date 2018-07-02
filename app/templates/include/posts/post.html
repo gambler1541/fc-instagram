@@ -62,5 +62,18 @@
 				<p>{{ post.content_html|safe|linebreaksbr }}</p>
 			</div>
 		{% endif %}
+		<br>
+
+		<ul>
+			{% for comment in post.comments.all %}
+				{% include 'include/posts/comment.html' %}
+			{% endfor %}
+		</ul>
+		<div>
+			<form action="{% url 'posts:comment-create' post_pk=post.pk %}" method="POST">
+				{% csrf_token %}
+				<input type="text" name="content" class="form-control">
+			</form>
+		</div>
 	</div>
 </div>

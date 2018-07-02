@@ -1,3 +1,4 @@
+from .comment_create import *
 from .post_create import *
 from .post_delete import *
 from .post_detail import *
