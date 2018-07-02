@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 
 {% block content %}
-	<h2>Post detail</h2>
-	<div><img src="{{ post.photo.url }}" width="100%" alt=""></div>
+	{% include 'include/posts/post.html' %}
 {% endblock %}

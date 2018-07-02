@@ -2,55 +2,6 @@
 
 {% block content %}
 	{% for post in posts %}
-		<!--
-			post의 author.username과
-			post.photo를 출력
-		-->
-		<div class="card mb-3">
-			<div class="card-header">
-				<div>
-					<!--
-						1. app/static폴더 만들기
-						2. settings.py에 STATIC_DIR변수에 해당 경로 추가
-						3. STATICFILES_DIRS에 위 변수 추가
-						4. 아래에서 post.author.img_profile이 존재하지 않으면
-								/static/images/blank_user.png <- 이 경로를 src로 사용한다
-								이 때, 'static'태그를 사용
-
-						숙제1. 댓글달기 구현
-						숙제2. Post좋아요 구현 (현재 좋아요 상태인지 표시, 좋아요 상태면 해제하도록 함)
-					-->
-					<div class="float-left">
-						{% if post.author.img_profile %}
-						<img src="{{ post.author.img_profile.url }}"
-						     style="width: 30px;"
-						     class="rounded-circle float-left mr-1"
-						     alt="">
-						{% endif %}
-						<span>{{ post.author.username }}</span>
-						<form action="" method="POST" style="display: inline-block;">
-							{% csrf_token %}
-							<button type="submit" class="btn btn-outline-primary btn-sm">+ Follow</button>
-						</form>
-					</div>
-					<form action="{% url 'posts:post-delete' pk=post.pk %}" method="POST" class="float-right">
-						{% csrf_token %}
-						<button class="btn btn-danger btn-sm">지우기</button>
-					</form>
-				</div>
-			</div>
-
-			<div class="card-body p-0">
-				{% if post.photo %}
-				<img width="100%" src="{{ post.photo.url }}" alt="">
-				{% endif %}
-
-				{% if post.tags.exists %}
-					<div class="container p-2">
-						<p>{{ post.content_html|safe|linebreaksbr }}</p>
-					</div>
-				{% endif %}
-			</div>
-		</div>
+		{% include 'include/posts/post.html' %}
 	{% endfor %}
 {% endblock %}
