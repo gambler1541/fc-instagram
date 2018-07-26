@@ -31,9 +31,18 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+#Facebook
+FACEBOOK_APP_ID = '264697654300209'
+FACEBOOK_APP_SECRET_CODE = '0afc92b9a6e0df64204532830f4884cb'
+
 # Auth
 AUTH_USER_MODEL = 'members.User'
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'members.backends.FacebookBackend',
+]
 LOGIN_URL = 'members:login'
+
 
 # Application definition
 
@@ -49,6 +58,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'django_extensions',
+    'rest_framework',
+
 ]
 
 MIDDLEWARE = [
@@ -90,7 +101,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'instagram',
-        'USER': 'lhy',
+        'USER': 'apple',
         'PASSWORD': '',
         'PORT': 5432,
         'HOST': 'localhost',
