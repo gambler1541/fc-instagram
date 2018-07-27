@@ -18,9 +18,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
-from members.apis import UserList
-from posts.apis import PostList
-from . import views
+from .. import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -33,8 +31,7 @@ urlpatterns = [
     #   posts.urls
     #   members.urls
     #       를 적절히 수정 (post.urls, members.urls모듈을 패키지화해서 분리해야 함)
-    path('api/posts/', include('posts.urls.apis')),
-    path('api/users/', include('members.urls.apis')),
+
 ]
 urlpatterns += static(
     prefix=settings.MEDIA_URL,
