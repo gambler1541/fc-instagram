@@ -1,13 +1,15 @@
-from rest_framework.response import Response
-from rest_framework.views import APIView
+from django.contrib.auth import get_user_model
+from rest_framework import generics
+
+
 
 from ..serializers import PostSerializer
 from ..models import Post
 
+User = get_user_model()
 
-class PostList(APIView):
-    def get(self, request, format=None):
-        post = Post.objects.all()
-        serializer = PostSerializer(post, many=True)
-        return Response(serializer.data)
+class PostList(generics.ListAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+
 
